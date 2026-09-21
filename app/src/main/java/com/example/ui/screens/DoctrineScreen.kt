@@ -16,6 +16,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
@@ -24,7 +25,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.data.DoctrineData
-import com.example.data.MovahediData
 import com.example.model.DoctrinePlaybook
 import com.example.ui.theme.*
 
@@ -114,10 +114,13 @@ fun DoctrineScreen(
                 },
                 trailingIcon = {
                     if (searchQuery.isNotEmpty()) {
-                        IconButton(onClick = { searchQuery = "" }) {
+                        IconButton(
+                            onClick = { searchQuery = "" },
+                            modifier = Modifier.testTag("search_query_clear_button")
+                        ) {
                             Icon(
                                 imageVector = Icons.Default.Clear,
-                                contentDescription = "Clear",
+                                contentDescription = "Clear search query",
                                 tint = TextSecondary
                             )
                         }
@@ -136,12 +139,69 @@ fun DoctrineScreen(
             )
         }
 
-        // Playbook Cards
-        items(filteredPlaybooks) { playbook ->
-            DoctrinePlaybookCard(
-                playbook = playbook,
-                onClick = { onSelectPlaybook(playbook) }
-            )
+        // Playbook Cards or Empty State
+        if (filteredPlaybooks.isEmpty()) {
+            item {
+                Surface(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(14.dp))
+                        .border(1.dp, SlateCardBorder, RoundedCornerShape(14.dp))
+                        .padding(24.dp)
+                        .testTag("doctrine_empty_search_state"),
+                    color = SlateCardElevated
+                ) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.SearchOff,
+                            contentDescription = "No playbooks found",
+                            tint = WarningAmber,
+                            modifier = Modifier.size(36.dp)
+                        )
+                        Spacer(modifier = Modifier.height(10.dp))
+                        Text(
+                            text = "No Playbooks Found",
+                            style = MaterialTheme.typography.titleMedium,
+                            color = TextPrimary,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(
+                            text = "No regulatory doctrine matched \"$searchQuery\". Try searching for GDPR, SEC, HIPAA, or NYDFS.",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = TextSecondary,
+                            textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                        )
+                        Spacer(modifier = Modifier.height(14.dp))
+                        Button(
+                            onClick = { searchQuery = "" },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = CyberCyan,
+                                contentColor = Color(0xFF001F2B)
+                            ),
+                            shape = RoundedCornerShape(8.dp),
+                            modifier = Modifier.testTag("empty_search_reset_button")
+                        ) {
+                            Text("RESET SEARCH FILTER", fontWeight = FontWeight.Bold)
+                        }
+                    }
+                }
+            }
+        } else {
+            items(filteredPlaybooks) { playbook ->
+                DoctrinePlaybookCard(
+                    playbook = playbook,
+                    onClick = { onSelectPlaybook(playbook) }
+                )
+            }
+        }
+
+        // Movahedi Strategic Incident Response & Compliance Advisory Card
+        item {
+            MovahediDoctrineAdvisoryCard()
         }
     }
 }
@@ -339,49 +399,16 @@ fun DoctrinePlaybookCard(
                         )
                     }
                 }
-
-                playbook.expertAdvisoryNote?.let { note ->
-                    Spacer(modifier = Modifier.height(12.dp))
-                    Surface(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clip(RoundedCornerShape(8.dp))
-                            .border(1.dp, CyberCyan.copy(alpha = 0.3f), RoundedCornerShape(8.dp)),
-                        color = SlateDark
-                    ) {
-                        Column(modifier = Modifier.padding(10.dp)) {
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Icon(
-                                    imageVector = Icons.Default.VerifiedUser,
-                                    contentDescription = null,
-                                    tint = CyberCyan,
-                                    modifier = Modifier.size(16.dp)
-                                )
-                                Spacer(modifier = Modifier.width(6.dp))
-                                Text(
-                                    text = "PRACTITIONER ADVISORY (MOVAHEDI.CA)",
-                                    style = MaterialTheme.typography.labelSmall,
-                                    color = CyberCyan,
-                                    fontWeight = FontWeight.Bold,
-                                    letterSpacing = 0.5.sp
-                                )
-                            }
-                            Spacer(modifier = Modifier.height(6.dp))
-                            Text(
-                                text = note,
-                                style = MaterialTheme.typography.bodySmall,
-                                color = TextSecondary,
-                                lineHeight = 16.sp
-                            )
-                        }
-                    }
-                }
             }
 
             Spacer(modifier = Modifier.height(10.dp))
 
             Row(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { isExpanded = !isExpanded }
+                    .padding(vertical = 4.dp)
+                    .testTag("playbook_toggle_button_${playbook.id}"),
                 horizontalArrangement = Arrangement.End,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -393,7 +420,7 @@ fun DoctrinePlaybookCard(
                 )
                 Icon(
                     imageVector = if (isExpanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
-                    contentDescription = null,
+                    contentDescription = if (isExpanded) "Collapse playbook" else "Expand playbook",
                     tint = CyberCyan,
                     modifier = Modifier.size(16.dp)
                 )
@@ -401,3 +428,123 @@ fun DoctrinePlaybookCard(
         }
     }
 }
+
+@Composable
+fun MovahediDoctrineAdvisoryCard(modifier: Modifier = Modifier) {
+    val context = LocalContext.current
+
+    Surface(
+        modifier = modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(16.dp))
+            .border(1.dp, CyberIndigo.copy(alpha = 0.5f), RoundedCornerShape(16.dp))
+            .testTag("doctrine_advisory_card"),
+        color = SlateCardElevated,
+        tonalElevation = 4.dp
+    ) {
+        Column(
+            modifier = Modifier
+                .background(
+                    Brush.verticalGradient(
+                        colors = listOf(
+                            Color(0xFF131A2E),
+                            Color(0xFF0F1524)
+                        )
+                    )
+                )
+                .padding(18.dp)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(
+                        imageVector = Icons.Default.VerifiedUser,
+                        contentDescription = "Advisory",
+                        tint = CyberCyan,
+                        modifier = Modifier.size(16.dp)
+                    )
+                    Spacer(modifier = Modifier.width(6.dp))
+                    Text(
+                        text = "EXECUTIVE CRISIS CONSULTATION",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = CyberCyan,
+                        fontWeight = FontWeight.ExtraBold,
+                        letterSpacing = 1.sp
+                    )
+                }
+
+                Box(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(4.dp))
+                        .background(CyberIndigo.copy(alpha = 0.25f))
+                        .padding(horizontal = 6.dp, vertical = 2.dp)
+                ) {
+                    Text(
+                        text = "MOVAHEDI.CA",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = CyberBlue,
+                        fontSize = 9.sp,
+                        fontFamily = FontFamily.Monospace,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(10.dp))
+
+            Text(
+                text = "Tailored Tabletop Exercises & Incident Governance",
+                style = MaterialTheme.typography.titleSmall,
+                color = TextPrimary,
+                fontWeight = FontWeight.Bold
+            )
+
+            Spacer(modifier = Modifier.height(4.dp))
+
+            Text(
+                text = "Preparing leadership for live ransomware extortions, regulatory reporting clocks, and SEC/GDPR liability demands custom playbooks. Connect with M. H. Movahedi for specialized crisis tabletop facilitation and breach response strategy.",
+                style = MaterialTheme.typography.bodySmall,
+                color = TextSecondary,
+                lineHeight = 18.sp
+            )
+
+            Spacer(modifier = Modifier.height(14.dp))
+
+            OutlinedButton(
+                onClick = {
+                    try {
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://movahedi.ca"))
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        context.startActivity(intent)
+                    } catch (_: Exception) {}
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(44.dp)
+                    .testTag("doctrine_advisory_link"),
+                colors = ButtonDefaults.outlinedButtonColors(contentColor = CyberCyan),
+                border = ButtonDefaults.outlinedButtonBorder(enabled = true).copy(
+                    brush = Brush.horizontalGradient(listOf(CyberCyan, CyberBlue))
+                ),
+                shape = RoundedCornerShape(8.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.OpenInNew,
+                    contentDescription = null,
+                    modifier = Modifier.size(15.dp)
+                )
+                Spacer(modifier = Modifier.width(6.dp))
+                Text(
+                    text = "EXPLORE ADVISORY & INSIGHTS (MOVAHEDI.CA)",
+                    fontSize = 11.sp,
+                    fontWeight = FontWeight.Bold,
+                    letterSpacing = 0.5.sp
+                )
+            }
+        }
+    }
+}
+

@@ -24,7 +24,6 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.data.MovahediData
 import com.example.model.AfterActionReport
 import com.example.model.Competency
 import com.example.model.ForensicIntegrity
@@ -38,8 +37,6 @@ fun AarReportScreen(
     onReturnToHome: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val context = LocalContext.current
-
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
@@ -211,24 +208,9 @@ fun AarReportScreen(
             }
         }
 
-        // Executive Tabletop & Advisory Card (movahedi.ca)
+        // Incident Response Advisory & Consultation
         item {
-            MovahediExecutiveAdvisoryCard(
-                onVisitSite = {
-                    try {
-                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(MovahediData.WEBSITE_URL))
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                        context.startActivity(intent)
-                    } catch (_: Exception) {}
-                },
-                onBookConsultation = {
-                    try {
-                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(MovahediData.DISCOVERY_CALL_URL))
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                        context.startActivity(intent)
-                    } catch (_: Exception) {}
-                }
-            )
+            MovahediExecutiveAdvisoryCard()
         }
 
         // Return Button
@@ -255,6 +237,124 @@ fun AarReportScreen(
                     text = "COMPLETE DRILL & RETURN TO COMMAND",
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.Black,
+                    letterSpacing = 0.5.sp
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun MovahediExecutiveAdvisoryCard(modifier: Modifier = Modifier) {
+    val context = LocalContext.current
+    Surface(
+        modifier = modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(14.dp))
+            .border(1.dp, CyberCyan.copy(alpha = 0.35f), RoundedCornerShape(14.dp))
+            .testTag("aar_movahedi_advisory_card"),
+        color = SlateCardElevated,
+        tonalElevation = 4.dp
+    ) {
+        Column(
+            modifier = Modifier
+                .background(
+                    Brush.verticalGradient(
+                        listOf(
+                            Color(0xFF0F1A2A),
+                            Color(0xFF0C1322)
+                        )
+                    )
+                )
+                .padding(16.dp)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(
+                        imageVector = Icons.Default.Security,
+                        contentDescription = "Advisory",
+                        tint = CyberCyan,
+                        modifier = Modifier.size(16.dp)
+                    )
+                    Spacer(modifier = Modifier.width(6.dp))
+                    Text(
+                        text = "INCIDENT RESPONSE ADVISORY",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = CyberCyan,
+                        fontWeight = FontWeight.Bold,
+                        letterSpacing = 1.sp
+                    )
+                }
+
+                Box(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(4.dp))
+                        .background(CyberCyan.copy(alpha = 0.15f))
+                        .padding(horizontal = 6.dp, vertical = 2.dp)
+                ) {
+                    Text(
+                        text = "MOVAHEDI.CA",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = CyberCyan,
+                        fontSize = 9.sp,
+                        fontFamily = FontFamily.Monospace,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(10.dp))
+
+            Text(
+                text = "Turn Tabletop Lessons Into Boardroom Readiness",
+                style = MaterialTheme.typography.titleSmall,
+                color = TextPrimary,
+                fontWeight = FontWeight.Bold
+            )
+
+            Spacer(modifier = Modifier.height(4.dp))
+
+            Text(
+                text = "Need external tabletop facilitation, customized adversary emulation, or executive crisis playbooks? Access battle-tested advisory services, threat insights, and cyber governance frameworks at movahedi.ca.",
+                style = MaterialTheme.typography.bodySmall,
+                color = TextSecondary,
+                lineHeight = 18.sp
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Button(
+                onClick = {
+                    try {
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://movahedi.ca"))
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        context.startActivity(intent)
+                    } catch (_: Exception) {}
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(42.dp)
+                    .testTag("aar_advisory_link_button"),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = CyberIndigo.copy(alpha = 0.6f),
+                    contentColor = CyberCyan
+                ),
+                shape = RoundedCornerShape(8.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.OpenInNew,
+                    contentDescription = null,
+                    modifier = Modifier.size(14.dp)
+                )
+                Spacer(modifier = Modifier.width(6.dp))
+                Text(
+                    text = "VISIT MOVAHEDI.CA ADVISORY & TOOLS",
+                    style = MaterialTheme.typography.labelMedium,
+                    fontWeight = FontWeight.Bold,
                     letterSpacing = 0.5.sp
                 )
             }
@@ -549,133 +649,6 @@ fun DecisionAuditItem(
 
         if (!isLast) {
             Spacer(modifier = Modifier.height(12.dp))
-        }
-    }
-}
-
-@Composable
-fun MovahediExecutiveAdvisoryCard(
-    onVisitSite: () -> Unit,
-    onBookConsultation: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Surface(
-        modifier = modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(14.dp))
-            .border(
-                1.dp,
-                Brush.horizontalGradient(listOf(CyberCyan.copy(alpha = 0.5f), CyberIndigo.copy(alpha = 0.5f))),
-                RoundedCornerShape(14.dp)
-            ),
-        color = SlateCardElevated
-    ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(
-                        imageVector = Icons.Default.WorkspacePremium,
-                        contentDescription = null,
-                        tint = CyberCyan,
-                        modifier = Modifier.size(20.dp)
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = "EXECUTIVE ADVISORY & CONSULTATION",
-                        style = MaterialTheme.typography.labelSmall,
-                        color = CyberCyan,
-                        fontWeight = FontWeight.Bold,
-                        letterSpacing = 0.5.sp
-                    )
-                }
-
-                Surface(
-                    shape = RoundedCornerShape(4.dp),
-                    color = SlateDark,
-                    modifier = Modifier.border(1.dp, SlateCardBorder, RoundedCornerShape(4.dp))
-                ) {
-                    Text(
-                        text = "movahedi.ca",
-                        color = CyberCyan,
-                        fontSize = 10.sp,
-                        fontWeight = FontWeight.Bold,
-                        fontFamily = FontFamily.Monospace,
-                        modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Text(
-                text = "Turn Tabletop Simulations into Enterprise Resilience",
-                style = MaterialTheme.typography.titleMedium,
-                color = TextPrimary,
-                fontWeight = FontWeight.Bold
-            )
-
-            Spacer(modifier = Modifier.height(4.dp))
-
-            Text(
-                text = "Need customized incident response tabletop exercises for your board, or an independent audit of your privacy & AI risk frameworks? Connect with Mohammad Movahedi (CIPP/C, Lean Six Sigma Black Belt) at movahedi.ca.",
-                style = MaterialTheme.typography.bodySmall,
-                color = TextSecondary,
-                lineHeight = 18.sp
-            )
-
-            Spacer(modifier = Modifier.height(14.dp))
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                Button(
-                    onClick = onBookConsultation,
-                    colors = ButtonDefaults.buttonColors(containerColor = CyberCyan),
-                    shape = RoundedCornerShape(8.dp),
-                    modifier = Modifier
-                        .weight(1f)
-                        .height(48.dp)
-                        .testTag("aar_book_advisory_button")
-                ) {
-                    Text(
-                        text = "Book Advisory Call",
-                        color = Color(0xFF001F2B),
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 12.sp
-                    )
-                }
-
-                OutlinedButton(
-                    onClick = onVisitSite,
-                    shape = RoundedCornerShape(8.dp),
-                    colors = ButtonDefaults.outlinedButtonColors(contentColor = CyberCyan),
-                    border = ButtonDefaults.outlinedButtonBorder.copy(
-                        brush = Brush.horizontalGradient(listOf(CyberCyan, CyberIndigo))
-                    ),
-                    modifier = Modifier
-                        .weight(1f)
-                        .height(48.dp)
-                        .testTag("aar_visit_movahedi_button")
-                ) {
-                    Text(
-                        text = "movahedi.ca",
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 12.sp
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Icon(
-                        imageVector = Icons.Default.OpenInNew,
-                        contentDescription = null,
-                        tint = CyberCyan,
-                        modifier = Modifier.size(12.dp)
-                    )
-                }
-            }
         }
     }
 }

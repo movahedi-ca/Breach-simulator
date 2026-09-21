@@ -1,5 +1,7 @@
 package com.example.ui.screens
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -17,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -159,12 +162,68 @@ fun HomeScreen(
             }
         }
 
-        // Scenario Cards
-        items(filteredScenarios, key = { it.id }, contentType = { "scenario_card" }) { scenario ->
-            ScenarioCard(
-                scenario = scenario,
-                onClick = { onSelectScenario(scenario) }
-            )
+        // Scenario Cards or Empty Filter State
+        if (filteredScenarios.isEmpty()) {
+            item(key = "empty_scenarios_state", contentType = { "empty_state" }) {
+                Surface(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(14.dp))
+                        .border(1.dp, SlateCardBorder, RoundedCornerShape(14.dp))
+                        .padding(24.dp)
+                        .testTag("empty_scenarios_state"),
+                    color = SlateCardElevated
+                ) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.FilterListOff,
+                            contentDescription = "No scenarios found",
+                            tint = WarningAmber,
+                            modifier = Modifier.size(36.dp)
+                        )
+                        Spacer(modifier = Modifier.height(10.dp))
+                        Text(
+                            text = "No Scenarios In Category",
+                            style = MaterialTheme.typography.titleMedium,
+                            color = TextPrimary,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(
+                            text = "No active breach scenarios match this filter.",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = TextSecondary
+                        )
+                        Spacer(modifier = Modifier.height(12.dp))
+                        Button(
+                            onClick = { selectedCategoryFilter = null },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = CyberCyan,
+                                contentColor = Color(0xFF001F2B)
+                            ),
+                            shape = RoundedCornerShape(8.dp),
+                            modifier = Modifier.testTag("reset_category_filter_button")
+                        ) {
+                            Text("SHOW ALL SCENARIOS", fontWeight = FontWeight.Bold)
+                        }
+                    }
+                }
+            }
+        } else {
+            items(filteredScenarios, key = { it.id }, contentType = { "scenario_card" }) { scenario ->
+                ScenarioCard(
+                    scenario = scenario,
+                    onClick = { onSelectScenario(scenario) }
+                )
+            }
+        }
+
+        // Executive Tabletop Advisory & Facilitation Banner
+        item(key = "home_advisory_banner", contentType = { "advisory_banner" }) {
+            WarRoomMovahediBanner()
         }
     }
 }
@@ -514,3 +573,123 @@ fun ScenarioCard(
         }
     }
 }
+
+@Composable
+fun WarRoomMovahediBanner(modifier: Modifier = Modifier) {
+    val context = LocalContext.current
+
+    Surface(
+        modifier = modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(16.dp))
+            .border(1.dp, CyberCyan.copy(alpha = 0.35f), RoundedCornerShape(16.dp))
+            .testTag("home_advisory_banner"),
+        color = SlateCardElevated,
+        tonalElevation = 4.dp
+    ) {
+        Column(
+            modifier = Modifier
+                .background(
+                    Brush.verticalGradient(
+                        listOf(
+                            Color(0xFF0F1A2A),
+                            Color(0xFF0B1220)
+                        )
+                    )
+                )
+                .padding(18.dp)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(
+                        imageVector = Icons.Default.Shield,
+                        contentDescription = "Advisory",
+                        tint = CyberCyan,
+                        modifier = Modifier.size(16.dp)
+                    )
+                    Spacer(modifier = Modifier.width(6.dp))
+                    Text(
+                        text = "EXECUTIVE TABLETOP ADVISORY",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = CyberCyan,
+                        fontWeight = FontWeight.ExtraBold,
+                        letterSpacing = 1.sp
+                    )
+                }
+
+                Box(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(4.dp))
+                        .background(CyberCyan.copy(alpha = 0.15f))
+                        .padding(horizontal = 6.dp, vertical = 2.dp)
+                ) {
+                    Text(
+                        text = "MOVAHEDI.CA",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = CyberCyan,
+                        fontSize = 9.sp,
+                        fontFamily = FontFamily.Monospace,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(10.dp))
+
+            Text(
+                text = "Cyber Crisis Simulations & Incident Readiness",
+                style = MaterialTheme.typography.titleSmall,
+                color = TextPrimary,
+                fontWeight = FontWeight.Bold
+            )
+
+            Spacer(modifier = Modifier.height(4.dp))
+
+            Text(
+                text = "Empower C-suites and boardrooms to navigate catastrophic cyber attacks. Discover specialized advisory services, custom inject scenarios, and executive tabletop facilitation by M. H. Movahedi.",
+                style = MaterialTheme.typography.bodySmall,
+                color = TextSecondary,
+                lineHeight = 18.sp
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            OutlinedButton(
+                onClick = {
+                    try {
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://movahedi.ca"))
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        context.startActivity(intent)
+                    } catch (_: Exception) {}
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(42.dp)
+                    .testTag("home_advisory_link"),
+                colors = ButtonDefaults.outlinedButtonColors(contentColor = CyberCyan),
+                border = ButtonDefaults.outlinedButtonBorder(enabled = true).copy(
+                    brush = Brush.horizontalGradient(listOf(CyberCyan, CyberBlue))
+                ),
+                shape = RoundedCornerShape(8.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.OpenInNew,
+                    contentDescription = null,
+                    modifier = Modifier.size(14.dp)
+                )
+                Spacer(modifier = Modifier.width(6.dp))
+                Text(
+                    text = "VISIT MOVAHEDI.CA ADVISORY & TOOLS",
+                    style = MaterialTheme.typography.labelMedium,
+                    fontWeight = FontWeight.Bold,
+                    letterSpacing = 0.5.sp
+                )
+            }
+        }
+    }
+}
+

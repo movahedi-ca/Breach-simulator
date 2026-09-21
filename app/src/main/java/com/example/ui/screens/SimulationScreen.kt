@@ -254,13 +254,17 @@ fun SimulationScreen(
                             showAbortDialog = false
                             onAbort()
                         },
-                        colors = ButtonDefaults.buttonColors(containerColor = AlertRed)
+                        colors = ButtonDefaults.buttonColors(containerColor = AlertRed),
+                        modifier = Modifier.testTag("abort_dialog_confirm_button")
                     ) {
                         Text("Confirm Abort")
                     }
                 },
                 dismissButton = {
-                    TextButton(onClick = { showAbortDialog = false }) {
+                    TextButton(
+                        onClick = { showAbortDialog = false },
+                        modifier = Modifier.testTag("abort_dialog_cancel_button")
+                    ) {
                         Text("Cancel", color = TextSecondary)
                     }
                 },

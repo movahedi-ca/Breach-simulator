@@ -273,13 +273,17 @@ fun HistoryScreen(
                         showClearDialog = false
                         onClearAll()
                     },
-                    colors = ButtonDefaults.buttonColors(containerColor = AlertRed)
+                    colors = ButtonDefaults.buttonColors(containerColor = AlertRed),
+                    modifier = Modifier.testTag("clear_dialog_confirm_button")
                 ) {
                     Text("Clear All")
                 }
             },
             dismissButton = {
-                TextButton(onClick = { showClearDialog = false }) {
+                TextButton(
+                    onClick = { showClearDialog = false },
+                    modifier = Modifier.testTag("clear_dialog_cancel_button")
+                ) {
                     Text("Cancel", color = TextSecondary)
                 }
             },
