@@ -1,0 +1,42 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Outer Cyber Shield -->
+    <path
+        android:fillColor="#1000F0FF"
+        android:strokeColor="#00F0FF"
+        android:strokeWidth="2.5"
+        android:pathData="M54,23 L79,33 C79,57 68,74 54,83 C40,74 29,57 29,33 Z" />
+
+    <!-- Inner Shield Accent -->
+    <path
+        android:fillColor="#1538BDF8"
+        android:strokeColor="#38BDF8"
+        android:strokeWidth="1.5"
+        android:pathData="M54,29 L73,37 C73,56 64,69 54,76 C44,69 35,56 35,37 Z" />
+
+    <!-- Lock Shackle -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="2.5"
+        android:strokeLineCap="round"
+        android:pathData="M47,50 V44 C47,40.1 50.1,37 54,37 C57.9,37 61,40.1 61,44 V50" />
+
+    <!-- Lock Body -->
+    <path
+        android:fillColor="#00F0FF"
+        android:pathData="M43,50 H65 C66.1,50 67,50.9 67,52 V64 C67,65.1 66.1,66 65,66 H43 C41.9,66 41,65.1 41,64 V52 C41,50.9 41.9,50 43,50 Z" />
+
+    <!-- Lock Keyhole -->
+    <path
+        android:fillColor="#0B111E"
+        android:pathData="M54,55 A2,2 0 1,0 54,59 V62 H54 Z" />
+
+    <!-- Warning / Incident Pulse Dot -->
+    <path
+        android:fillColor="#EF4444"
+        android:pathData="M54,25 A2.5,2.5 0 1,0 54,30 A2.5,2.5 0 1,0 54,25 Z" />
+</vector>
