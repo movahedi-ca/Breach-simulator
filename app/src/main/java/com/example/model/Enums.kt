@@ -43,5 +43,6 @@ enum class Screen {
     AAR_REPORT,
     DOCTRINE_LIST,
     DOCTRINE_DETAIL,
-    HISTORY_LOGS
+    HISTORY_LOGS,
+    ADVISORY
 }

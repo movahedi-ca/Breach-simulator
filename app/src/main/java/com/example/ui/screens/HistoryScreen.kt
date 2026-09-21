@@ -79,14 +79,14 @@ fun HistoryScreen(
                     IconButton(
                         onClick = { showClearDialog = true },
                         modifier = Modifier
-                            .size(36.dp)
+                            .size(48.dp)
                             .clip(RoundedCornerShape(8.dp))
                             .background(AlertRed.copy(alpha = 0.15f))
                             .testTag("clear_history_button")
                     ) {
                         Icon(
                             imageVector = Icons.Default.DeleteSweep,
-                            contentDescription = "Clear All",
+                            contentDescription = "Clear all drill records",
                             tint = AlertRed
                         )
                     }
@@ -147,16 +147,17 @@ fun HistoryScreen(
 
                         Column {
                             Text(
-                                text = "EST. BREACH SAVINGS",
+                                text = "TOTAL EXPOSURE",
                                 style = MaterialTheme.typography.labelSmall,
                                 color = TextMuted,
                                 fontSize = 9.sp,
                                 fontWeight = FontWeight.Bold
                             )
+                            val totalExposure = records.sumOf { it.finalCostUsd }
                             Text(
-                                text = "$4.8M+",
+                                text = formatCurrency(totalExposure),
                                 style = MaterialTheme.typography.titleLarge,
-                                color = ContainedGreen,
+                                color = CyberBlue,
                                 fontFamily = FontFamily.Monospace,
                                 fontWeight = FontWeight.Bold
                             )
@@ -329,13 +330,15 @@ fun HistoryRecordCard(
 
                 IconButton(
                     onClick = onDelete,
-                    modifier = Modifier.size(24.dp)
+                    modifier = Modifier
+                        .size(48.dp)
+                        .testTag("delete_record_button_${record.id}")
                 ) {
                     Icon(
                         imageVector = Icons.Default.Delete,
-                        contentDescription = "Delete",
+                        contentDescription = "Delete incident record",
                         tint = TextMuted,
-                        modifier = Modifier.size(16.dp)
+                        modifier = Modifier.size(18.dp)
                     )
                 }
             }

@@ -6,9 +6,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.History
+import androidx.compose.material.icons.filled.Lightbulb
 import androidx.compose.material.icons.filled.MenuBook
 import androidx.compose.material.icons.filled.Shield
 import androidx.compose.material.icons.outlined.History
+import androidx.compose.material.icons.outlined.Lightbulb
 import androidx.compose.material.icons.outlined.MenuBook
 import androidx.compose.material.icons.outlined.Shield
 import androidx.compose.material3.*
@@ -90,6 +92,33 @@ fun TabletopBottomNavBar(
                 unselectedTextColor = TextMuted
             ),
             modifier = Modifier.testTag("nav_item_doctrine")
+        )
+
+        NavigationBarItem(
+            selected = currentScreen == Screen.ADVISORY,
+            onClick = { onNavigate(Screen.ADVISORY) },
+            icon = {
+                Icon(
+                    imageVector = if (currentScreen == Screen.ADVISORY) Icons.Filled.Lightbulb else Icons.Outlined.Lightbulb,
+                    contentDescription = "Advisory & Tools",
+                    modifier = Modifier.size(22.dp)
+                )
+            },
+            label = {
+                Text(
+                    text = "Advisory",
+                    fontSize = 11.sp,
+                    fontWeight = if (currentScreen == Screen.ADVISORY) FontWeight.Bold else FontWeight.Normal
+                )
+            },
+            colors = NavigationBarItemDefaults.colors(
+                selectedIconColor = Color(0xFF001F2B),
+                selectedTextColor = CyberCyan,
+                indicatorColor = CyberCyan,
+                unselectedIconColor = TextMuted,
+                unselectedTextColor = TextMuted
+            ),
+            modifier = Modifier.testTag("nav_item_advisory")
         )
 
         NavigationBarItem(

@@ -380,6 +380,62 @@ object ScenariosData {
                             )
                         )
                     )
+                ),
+                SimulationPhase(
+                    phaseNumber = 3,
+                    title = "Phase 3: SLSA Level 3 CI/CD Attestation & Code Signing",
+                    timeLabel = "T+72:00 | Engineering Governance",
+                    briefing = "External security auditors report that while the malicious NPM package has been purged, build runners lack cryptographic provenance to prevent future compromised dependencies from passing CI/CD pipelines.",
+                    breakingInject = BreakingInject(
+                        title = "AUDIT FINDING: Pipeline Provenance Deficit",
+                        source = "Lead DevSecOps Architect",
+                        message = "Enterprise clients require cryptographic proof of build integrity and SLSA Level 3 provenance before restoring SaaS integrations.",
+                        urgent = true
+                    ),
+                    dilemma = IncidentDilemma(
+                        question = "What architectural pipeline controls do you mandate across enterprise builds?",
+                        operationalContext = "Enforcing cryptographic provenance and hermetic builds adds build overhead but guarantees artifact integrity.",
+                        choices = listOf(
+                            DecisionChoice(
+                                id = "cm_p3_c1",
+                                title = "Enforce SLSA 3 Hermetic Builds, Ephemeral Isolated Runners, and Cosign Signing",
+                                description = "Mandate cryptographic signing of all container images with Sigstore/Cosign, require automated SBOM validation against CVE databases, and execute builds on ephemeral, single-use isolated runners.",
+                                recommendedBy = "Chief Technology Officer",
+                                costDeltaUsd = 280_000L,
+                                timeDeltaHours = 8,
+                                trustDeltaPercent = 15,
+                                legalRiskChange = -2,
+                                forensicsImpact = ForensicIntegrity.INTACT,
+                                feedbackDoctrine = "Exemplary supply chain defense. SLSA Level 3 compliance and cryptographic provenance establish unbreakable build assurance, meeting NIST SP 800-161 and ISO 27001 requirements.",
+                                competencyScores = mapOf(
+                                    Competency.DETECTION_TRIAGE to 92,
+                                    Competency.CONTAINMENT_SPEED to 90,
+                                    Competency.LEGAL_COMPLIANCE to 95,
+                                    Competency.CRISIS_COMMS to 90,
+                                    Competency.BUSINESS_RESILIENCE to 98
+                                )
+                            ),
+                            DecisionChoice(
+                                id = "cm_p3_c2",
+                                title = "Add Static Package Lock Pinning without Cryptographic Signatures",
+                                description = "Pin NPM dependency package versions in lockfiles but omit cryptographic artifact signing or runner isolation to preserve quick release velocity.",
+                                recommendedBy = "VP Engineering",
+                                costDeltaUsd = 750_000L,
+                                timeDeltaHours = 4,
+                                trustDeltaPercent = -15,
+                                legalRiskChange = 3,
+                                forensicsImpact = ForensicIntegrity.INTACT,
+                                feedbackDoctrine = "Insufficient defense. Static package pinning fails to protect against compromised registry hashes or upstream registry account takeovers.",
+                                competencyScores = mapOf(
+                                    Competency.DETECTION_TRIAGE to 60,
+                                    Competency.CONTAINMENT_SPEED to 55,
+                                    Competency.LEGAL_COMPLIANCE to 45,
+                                    Competency.CRISIS_COMMS to 40,
+                                    Competency.BUSINESS_RESILIENCE to 40
+                                )
+                            )
+                        )
+                    )
                 )
             )
         ),
@@ -491,6 +547,62 @@ object ScenariosData {
                                     Competency.LEGAL_COMPLIANCE to 15,
                                     Competency.CRISIS_COMMS to 30,
                                     Competency.BUSINESS_RESILIENCE to 40
+                                )
+                            )
+                        )
+                    )
+                ),
+                SimulationPhase(
+                    phaseNumber = 3,
+                    title = "Phase 3: Enterprise Policy Overhaul & Hardware Encryption",
+                    timeLabel = "T+72:00 | Board Risk Committee",
+                    briefing = "Local police recover the stolen hardware from a pawn shop. Forensics confirms the thief attempted multiple brute-force logins before the remote wipe signal was triggered.",
+                    breakingInject = BreakingInject(
+                        title = "BOARD INQUIRY: Executive Security Mandate",
+                        source = "Audit Committee Chairman",
+                        message = "The Board of Directors demands immediate implementation of zero-trust hardware controls across all executive travel devices to prevent recurring exposure.",
+                        urgent = true
+                    ),
+                    dilemma = IncidentDilemma(
+                        question = "What enterprise policy and technical controls do you enforce for mobile executives?",
+                        operationalContext = "Balancing C-suite operational convenience against rigorous hardware-level cryptographic assurance is critical to preventing recurrent corporate espionage.",
+                        choices = listOf(
+                            DecisionChoice(
+                                id = "ll_p3_c1",
+                                title = "Enforce Pre-Boot BitLocker PINs, Hardware FIDO2 Keys, and Dedicated Travel Laptops",
+                                description = "Mandate TPM pre-boot authorization PINs, hardware security keys for all enterprise logins, and loaner travel laptops stripped of local storage for international transit.",
+                                recommendedBy = "Chief Information Security Officer",
+                                costDeltaUsd = 350_000L,
+                                timeDeltaHours = 8,
+                                trustDeltaPercent = 15,
+                                legalRiskChange = -2,
+                                forensicsImpact = ForensicIntegrity.INTACT,
+                                feedbackDoctrine = "Exemplary governance. Pre-boot cryptographic authentication ensures that cold-boot attacks and hardware theft cannot compromise at-rest storage even if physical possession is lost.",
+                                competencyScores = mapOf(
+                                    Competency.DETECTION_TRIAGE to 92,
+                                    Competency.CONTAINMENT_SPEED to 90,
+                                    Competency.LEGAL_COMPLIANCE to 95,
+                                    Competency.CRISIS_COMMS to 90,
+                                    Competency.BUSINESS_RESILIENCE to 98
+                                )
+                            ),
+                            DecisionChoice(
+                                id = "ll_p3_c2",
+                                title = "Maintain Standard OS Password Protection to Avoid Executive Inconvenience",
+                                description = "Issue a general security advisory reminder but decline to mandate pre-boot authentication or hardware loaner policies.",
+                                recommendedBy = "VP Executive Operations",
+                                costDeltaUsd = 800_000L,
+                                timeDeltaHours = 4,
+                                trustDeltaPercent = -15,
+                                legalRiskChange = 3,
+                                forensicsImpact = ForensicIntegrity.INTACT,
+                                feedbackDoctrine = "Repeated vulnerability. Audit committee flagged systemic failure of due care, resulting in an external cybersecurity compliance audit.",
+                                competencyScores = mapOf(
+                                    Competency.DETECTION_TRIAGE to 60,
+                                    Competency.CONTAINMENT_SPEED to 50,
+                                    Competency.LEGAL_COMPLIANCE to 40,
+                                    Competency.CRISIS_COMMS to 50,
+                                    Competency.BUSINESS_RESILIENCE to 35
                                 )
                             )
                         )
@@ -610,6 +722,62 @@ object ScenariosData {
                             )
                         )
                     )
+                ),
+                SimulationPhase(
+                    phaseNumber = 3,
+                    title = "Phase 3: FTC Safeguards Compliance & Outbound DLP Architecture",
+                    timeLabel = "T+72:00 | Root-Cause Remediation",
+                    briefing = "Engineering root-cause analysis determines that developers used live production database snapshots in marketing newsletter test pipelines without masking or obfuscation.",
+                    breakingInject = BreakingInject(
+                        title = "FTC INQUIRY: Data Safeguards Audit",
+                        source = "Federal Trade Commission",
+                        message = "FTC Division of Privacy and Identity Protection issues informal inquiry demanding copy of Written Information Security Plan (WISP) and data masking policies.",
+                        urgent = true
+                    ),
+                    dilemma = IncidentDilemma(
+                        question = "How do you restructure staging data architecture to prevent recurrence and satisfy regulators?",
+                        operationalContext = "Synthetic test data generation prevents live PII leakage permanently, while automated outbound Data Loss Prevention (DLP) halts erroneous mass deliveries.",
+                        choices = listOf(
+                            DecisionChoice(
+                                id = "me_p3_c1",
+                                title = "Implement Synthetic Mock Data Pipelines & Outbound Regex DLP Gateways",
+                                description = "Completely sever marketing systems from production databases, deploy automated Faker-based synthetic data generators, and install inline email DLP to block unmasked SSNs.",
+                                recommendedBy = "Head of Security Architecture",
+                                costDeltaUsd = 280_000L,
+                                timeDeltaHours = 12,
+                                trustDeltaPercent = 10,
+                                legalRiskChange = -2,
+                                forensicsImpact = ForensicIntegrity.INTACT,
+                                feedbackDoctrine = "Superior engineering remediation. Conforms to NIST SP 800-61 and FTC Safeguards Rule requirements for testing data hygiene and outbound data flow control.",
+                                competencyScores = mapOf(
+                                    Competency.DETECTION_TRIAGE to 95,
+                                    Competency.CONTAINMENT_SPEED to 90,
+                                    Competency.LEGAL_COMPLIANCE to 96,
+                                    Competency.CRISIS_COMMS to 90,
+                                    Competency.BUSINESS_RESILIENCE to 95
+                                )
+                            ),
+                            DecisionChoice(
+                                id = "me_p3_c2",
+                                title = "Rely on Manual Peer-Review Approval of Marketing Blast Scripts",
+                                description = "Establish a manual email sign-off checklist without automated pipeline safeguards or database segregation.",
+                                recommendedBy = "Director of Marketing Operations",
+                                costDeltaUsd = 950_000L,
+                                timeDeltaHours = 4,
+                                trustDeltaPercent = -20,
+                                legalRiskChange = 4,
+                                forensicsImpact = ForensicIntegrity.INTACT,
+                                feedbackDoctrine = "Inadequate administrative safeguard. Six months later, another manual query mistake caused customer financial statements to leak again.",
+                                competencyScores = mapOf(
+                                    Competency.DETECTION_TRIAGE to 55,
+                                    Competency.CONTAINMENT_SPEED to 50,
+                                    Competency.LEGAL_COMPLIANCE to 30,
+                                    Competency.CRISIS_COMMS to 40,
+                                    Competency.BUSINESS_RESILIENCE to 30
+                                )
+                            )
+                        )
+                    )
                 )
             )
         ),
@@ -720,6 +888,239 @@ object ScenariosData {
                                     Competency.CONTAINMENT_SPEED to 50,
                                     Competency.LEGAL_COMPLIANCE to 30,
                                     Competency.CRISIS_COMMS to 10,
+                                    Competency.BUSINESS_RESILIENCE to 40
+                                )
+                            )
+                        )
+                    )
+                ),
+                SimulationPhase(
+                    phaseNumber = 3,
+                    title = "Phase 3: Regulatory Notice & Cloud IAM Governance Overhaul",
+                    timeLabel = "T+48:00 | Global Regulatory Reporting",
+                    briefing = "Forensic analysis of CloudTrail server access logs reveals 4 external IP addresses downloaded 185,000 files prior to bucket remediation, affecting EU and California citizens.",
+                    breakingInject = BreakingInject(
+                        title = "STATUTORY NOTICE TRIGGERED",
+                        source = "Data Protection Officer",
+                        message = "Because exfiltration by unauthorized third parties is verified, formal notification to California AG and European DPAs is legally mandatory under CCPA and GDPR.",
+                        urgent = true
+                    ),
+                    dilemma = IncidentDilemma(
+                        question = "What regulatory and customer notification strategy do you execute?",
+                        operationalContext = "Self-reporting with detailed forensic mitigation limits regulatory penalties, whereas concealing confirmed exfiltration risks max-tier statutory fines.",
+                        choices = listOf(
+                            DecisionChoice(
+                                id = "ce_p3_c1",
+                                title = "File Formal GDPR/CCPA Notices & Deploy Automated AWS IAM Policy Sentinels",
+                                description = "Notify relevant DPAs within 72 hours with precise affected counts, issue direct email advisories to affected account holders, and deploy AWS Config rules to auto-remediate public S3 buckets.",
+                                recommendedBy = "Chief Information Security Officer & DPO",
+                                costDeltaUsd = 320_000L,
+                                timeDeltaHours = 6,
+                                trustDeltaPercent = 12,
+                                legalRiskChange = -2,
+                                forensicsImpact = ForensicIntegrity.INTACT,
+                                feedbackDoctrine = "Flawless compliance and remediation posture. Timely notifications with demonstrated technical controls (AWS Config auto-remediation) satisfied regulators and averted class-action certification.",
+                                competencyScores = mapOf(
+                                    Competency.DETECTION_TRIAGE to 94,
+                                    Competency.CONTAINMENT_SPEED to 92,
+                                    Competency.LEGAL_COMPLIANCE to 98,
+                                    Competency.CRISIS_COMMS to 92,
+                                    Competency.BUSINESS_RESILIENCE to 95
+                                )
+                            ),
+                            DecisionChoice(
+                                id = "ce_p3_c2",
+                                title = "Limit Disclosure to Informal Blog Post and Avoid Regulatory Filings",
+                                description = "Publish a vague tech blog update about 'system performance enhancements' and refrain from formal regulatory submissions.",
+                                recommendedBy = "Corporate Communications VP",
+                                costDeltaUsd = 1_800_000L,
+                                timeDeltaHours = 72,
+                                trustDeltaPercent = -35,
+                                legalRiskChange = 6,
+                                forensicsImpact = ForensicIntegrity.INTACT,
+                                feedbackDoctrine = "Severe regulatory violation. The California Privacy Protection Agency (CPPA) and Irish DPC opened joint formal enforcement investigations, issuing substantial administrative fines.",
+                                competencyScores = mapOf(
+                                    Competency.DETECTION_TRIAGE to 50,
+                                    Competency.CONTAINMENT_SPEED to 45,
+                                    Competency.LEGAL_COMPLIANCE to 10,
+                                    Competency.CRISIS_COMMS to 20,
+                                    Competency.BUSINESS_RESILIENCE to 25
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        ),
+        IncidentScenario(
+            id = "rogue-admin-insider",
+            title = "Disgruntled Database Architect: Mass Exfiltration & Logic Bomb",
+            codename = "OP_INSIDE_JOB",
+            threatActor = "Privileged Insider (Terminated Lead DB Architect)",
+            severity = IncidentSeverity.CRITICAL,
+            category = ScenarioCategory.INSIDER_THREAT,
+            overview = "A lead database administrator passed over for promotion planted an encrypted staging script that copied 3.4M customer records to an external cloud storage provider and scheduled a time-bomb cron job to corrupt primary databases.",
+            impactedSystems = listOf("Core Customer RDS Postgres Clusters", "AWS IAM Identity Center", "HashiCorp Vault Secrets Engine", "Database Backup Archives"),
+            regulatoryScope = listOf("SOX Section 404 Internal Controls", "GDPR Article 32 & 33", "SEC Item 1.05", "State Breach Laws"),
+            baselineCostUsd = 1_350_000L,
+            estimatedDurationHours = 48,
+            phases = listOf(
+                SimulationPhase(
+                    phaseNumber = 1,
+                    title = "Phase 1: Privilege Revocation & Bastion Access Isolation",
+                    timeLabel = "T+00:10 | SOC Anomaly Alert",
+                    briefing = "DLP systems detect a 40GB compressed transfer from a DBA bastion host to a personal Wasabi S3 bucket. The employee was placed on administrative leave 2 hours prior.",
+                    breakingInject = BreakingInject(
+                        title = "ALERT: Active SSH Sessions Detected",
+                        source = "Cloud Security Operations",
+                        message = "The administrator still has 3 active terminal sessions open via personal SSH keys not tied to corporate Okta SSO.",
+                        urgent = true
+                    ),
+                    dilemma = IncidentDilemma(
+                        question = "What immediate privilege termination protocol do you authorize?",
+                        operationalContext = "Terminating network sessions instantly stops active downloads, but may trigger scheduled destructive scripts if not carefully scoped.",
+                        choices = listOf(
+                            DecisionChoice(
+                                id = "ra_p1_c1",
+                                title = "Emergency IAM Hard-Revoke, Rotate Bastion Keys & Pause Scheduled Cron Jobs",
+                                description = "Revoke all AWS IAM session tokens, cycle root database credentials in Vault, kill active SSH sessions, and temporarily pause unverified database cron tasks.",
+                                recommendedBy = "Chief Information Security Officer",
+                                costDeltaUsd = 220_000L,
+                                timeDeltaHours = 2,
+                                trustDeltaPercent = 5,
+                                legalRiskChange = -2,
+                                forensicsImpact = ForensicIntegrity.INTACT,
+                                feedbackDoctrine = "Exemplary insider containment doctrine. Cutting active sessions while pausing crons defuses delayed destructive logic bombs while preserving volatile command logs.",
+                                competencyScores = mapOf(
+                                    Competency.DETECTION_TRIAGE to 95,
+                                    Competency.CONTAINMENT_SPEED to 95,
+                                    Competency.LEGAL_COMPLIANCE to 90,
+                                    Competency.CRISIS_COMMS to 85,
+                                    Competency.BUSINESS_RESILIENCE to 92
+                                )
+                            ),
+                            DecisionChoice(
+                                id = "ra_p1_c2",
+                                title = "Passive Surveillance to Catch Exfiltration Destination",
+                                description = "Leave the sessions open for another 6 hours to trace exactly where the employee is uploading files.",
+                                recommendedBy = "Corporate Investigations Lead",
+                                costDeltaUsd = 1_400_000L,
+                                timeDeltaHours = 12,
+                                trustDeltaPercent = -25,
+                                legalRiskChange = 5,
+                                forensicsImpact = ForensicIntegrity.PARTIALLY_COMPROMISED,
+                                feedbackDoctrine = "Catastrophic delay. The logic bomb detonated at midnight, encrypting customer order history tables and deleting replica snapshots.",
+                                competencyScores = mapOf(
+                                    Competency.DETECTION_TRIAGE to 60,
+                                    Competency.CONTAINMENT_SPEED to 25,
+                                    Competency.LEGAL_COMPLIANCE to 30,
+                                    Competency.CRISIS_COMMS to 35,
+                                    Competency.BUSINESS_RESILIENCE to 20
+                                )
+                            )
+                        )
+                    )
+                ),
+                SimulationPhase(
+                    phaseNumber = 2,
+                    title = "Phase 2: Law Enforcement Referral & Evidence Preservation",
+                    timeLabel = "T+06:00 | Legal & Digital Forensics",
+                    briefing = "External DFIR team confirms the exfiltrated dataset contains payment card records and unhashed SSNs. The employee's company laptop was surrendered during exit.",
+                    dilemma = IncidentDilemma(
+                        question = "Do you engage federal law enforcement (FBI Cyber Division) and seek civil injunction?",
+                        operationalContext = "Criminal referrals make the breach matter of public court record, but enable search warrants to seize the employee's personal storage drives.",
+                        choices = listOf(
+                            DecisionChoice(
+                                id = "ra_p2_c1",
+                                title = "Formal FBI Referral, Ex Parte TRO, and Preservation Letter",
+                                description = "File formal criminal referral with FBI Cyber Division, obtain ex parte temporary restraining order to freeze external cloud buckets, and serve 18 U.S.C. § 2703(f) preservation letters.",
+                                recommendedBy = "Special Outside Cybersecurity Counsel",
+                                costDeltaUsd = 380_000L,
+                                timeDeltaHours = 6,
+                                trustDeltaPercent = 10,
+                                legalRiskChange = -3,
+                                forensicsImpact = ForensicIntegrity.INTACT,
+                                feedbackDoctrine = "Decisive legal action. FBI executed emergency seizure of the rogue Wasabi bucket before files could be distributed on darknet leak boards.",
+                                competencyScores = mapOf(
+                                    Competency.DETECTION_TRIAGE to 90,
+                                    Competency.CONTAINMENT_SPEED to 90,
+                                    Competency.LEGAL_COMPLIANCE to 98,
+                                    Competency.CRISIS_COMMS to 90,
+                                    Competency.BUSINESS_RESILIENCE to 94
+                                )
+                            ),
+                            DecisionChoice(
+                                id = "ra_p2_c2",
+                                title = "Attempt Informal Internal Settlement and Demand Letter",
+                                description = "Instruct HR to offer severance bonus in exchange for signed NDA and promise to delete personal drive copies without law enforcement involvement.",
+                                recommendedBy = "VP People Operations",
+                                costDeltaUsd = 1_800_000L,
+                                timeDeltaHours = 48,
+                                trustDeltaPercent = -30,
+                                legalRiskChange = 6,
+                                forensicsImpact = ForensicIntegrity.TAINTED,
+                                feedbackDoctrine = "Severe legal error. Paying off an extorting insider violates corporate fiduciary duties and SEC disclosure rules, leading to direct criminal investigation of executive officers.",
+                                competencyScores = mapOf(
+                                    Competency.DETECTION_TRIAGE to 50,
+                                    Competency.CONTAINMENT_SPEED to 40,
+                                    Competency.LEGAL_COMPLIANCE to 10,
+                                    Competency.CRISIS_COMMS to 25,
+                                    Competency.BUSINESS_RESILIENCE to 30
+                                )
+                            )
+                        )
+                    )
+                ),
+                SimulationPhase(
+                    phaseNumber = 3,
+                    title = "Phase 3: Zero-Standing-Privilege Architecture & Dual Authorization",
+                    timeLabel = "T+72:00 | Board Governance",
+                    briefing = "Audit committee demands complete architectural overhaul to eliminate single points of failure in administrative privilege.",
+                    breakingInject = BreakingInject(
+                        title = "MANDATE: SOX 404 Deficiency Remediation",
+                        source = "Internal Audit Director",
+                        message = "External SOX auditors classify single-admin database access as a Material Weakness requiring immediate board-level remediation.",
+                        urgent = true
+                    ),
+                    dilemma = IncidentDilemma(
+                        question = "What identity architecture do you implement for database infrastructure?",
+                        operationalContext = "Just-in-time access requires peer approval for production access, slightly reducing speed of emergency hotfixes but preventing rogue actions.",
+                        choices = listOf(
+                            DecisionChoice(
+                                id = "ra_p3_c1",
+                                title = "Implement Just-In-Time (JIT) Dual-Custodian Access & Ephemeral Vault Credentials",
+                                description = "Enforce zero standing privileges (ZSP), requiring dual-custodian peer approval for all production database access with auto-expiring 15-minute Vault session tokens.",
+                                recommendedBy = "Enterprise Security Architect",
+                                costDeltaUsd = 300_000L,
+                                timeDeltaHours = 8,
+                                trustDeltaPercent = 15,
+                                legalRiskChange = -2,
+                                forensicsImpact = ForensicIntegrity.INTACT,
+                                feedbackDoctrine = "Highest standard of identity security. Dual authorization and ephemeral credentials mathematically eliminate unilateral rogue insider attacks, satisfying SOX 404 and ISO 27001.",
+                                competencyScores = mapOf(
+                                    Competency.DETECTION_TRIAGE to 94,
+                                    Competency.CONTAINMENT_SPEED to 92,
+                                    Competency.LEGAL_COMPLIANCE to 98,
+                                    Competency.CRISIS_COMMS to 90,
+                                    Competency.BUSINESS_RESILIENCE to 98
+                                )
+                            ),
+                            DecisionChoice(
+                                id = "ra_p3_c2",
+                                title = "Require Weekly Manual Access Review Spreadsheets",
+                                description = "Keep existing admin credentials unchanged but institute weekly manual access review meetings between managers.",
+                                recommendedBy = "IT Operations Lead",
+                                costDeltaUsd = 650_000L,
+                                timeDeltaHours = 4,
+                                trustDeltaPercent = -10,
+                                legalRiskChange = 3,
+                                forensicsImpact = ForensicIntegrity.INTACT,
+                                feedbackDoctrine = "Inadequate control. Manual access reviews routinely suffer from review fatigue and fail to prevent real-time malicious actions by rogue administrators.",
+                                competencyScores = mapOf(
+                                    Competency.DETECTION_TRIAGE to 60,
+                                    Competency.CONTAINMENT_SPEED to 50,
+                                    Competency.LEGAL_COMPLIANCE to 40,
+                                    Competency.CRISIS_COMMS to 45,
                                     Competency.BUSINESS_RESILIENCE to 40
                                 )
                             )

@@ -84,22 +84,39 @@ class BreachSimulatorViewModel(
         _currentScreen.value = Screen.SIMULATION
     }
 
+    fun startSimulation() {
+        val scenario = _selectedScenario.value ?: return
+        startSimulation(scenario)
+    }
+
+    fun returnToHome() {
+        _currentScreen.value = Screen.HOME
+        _selectedScenario.value = null
+        _activeDecisionFeedback.value = null
+        _decisionsHistory.value = emptyList()
+    }
+
+    fun abortSimulation() {
+        returnToHome()
+    }
+
     fun submitDecision(choice: DecisionChoice) {
+        // Prevent concurrent or duplicate decision submissions
+        if (_activeDecisionFeedback.value != null) return
+
         val scenario = _selectedScenario.value ?: return
         val currentPhase = scenario.phases.getOrNull(_currentPhaseIndex.value) ?: return
 
-        // Update live metrics
+        // Update live metrics with safe arithmetic bounds
         val current = _liveMetrics.value
-        val newCost = max(0L, current.financialCostUsd + choice.costDeltaUsd)
-        val newTime = current.timeElapsedHours + choice.timeDeltaHours
-        val newTrust = min(100, max(0, current.publicTrustPercent + choice.trustDeltaPercent))
+        val newCost = (current.financialCostUsd + choice.costDeltaUsd).coerceIn(0L, Long.MAX_VALUE)
+        val newTime = max(0, current.timeElapsedHours + choice.timeDeltaHours)
+        val newTrust = (current.publicTrustPercent + choice.trustDeltaPercent).coerceIn(0, 100)
 
-        val riskIndex = LegalRiskLevel.values().indexOf(current.legalRisk)
-        val updatedRiskIndex = min(
-            LegalRiskLevel.values().size - 1,
-            max(0, riskIndex + choice.legalRiskChange)
-        )
-        val newLegalRisk = LegalRiskLevel.values()[updatedRiskIndex]
+        val riskLevels = LegalRiskLevel.values()
+        val riskIndex = riskLevels.indexOf(current.legalRisk).coerceAtLeast(0)
+        val updatedRiskIndex = (riskIndex + choice.legalRiskChange).coerceIn(0, riskLevels.size - 1)
+        val newLegalRisk = riskLevels[updatedRiskIndex]
 
         val newForensics = if (choice.forensicsImpact == ForensicIntegrity.TAINTED ||
             current.forensicIntegrity == ForensicIntegrity.TAINTED
@@ -132,6 +149,7 @@ class BreachSimulatorViewModel(
     }
 
     fun proceedFromFeedback() {
+        if (_activeDecisionFeedback.value == null) return
         _activeDecisionFeedback.value = null
         val scenario = _selectedScenario.value ?: return
         val nextIndex = _currentPhaseIndex.value + 1
@@ -177,7 +195,7 @@ class BreachSimulatorViewModel(
             LegalRiskLevel.CRITICAL -> 25
         }
 
-        val finalScore = min(100, max(0, baseScore - forensicsDeduction - legalPenalty))
+        val finalScore = (baseScore - forensicsDeduction - legalPenalty).coerceIn(0, 100)
 
         val letterGrade = when {
             finalScore >= 93 -> "A+"

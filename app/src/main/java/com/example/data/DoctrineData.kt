@@ -102,6 +102,84 @@ object DoctrineData {
                 "Powering off infected servers, destroying volatile memory evidence and active C2 process handles.",
                 "Skipping the post-incident review (AAR) and leaving known root vulnerabilities open to reinfection."
             )
+        ),
+        DoctrinePlaybook(
+            id = "nydfs-23-nycrr-500",
+            title = "NYDFS Cybersecurity Regulation (23 NYCRR 500.17)",
+            authority = "New York State Department of Financial Services (NYDFS)",
+            deadlineWindow = "Strict 72 Hours from determination",
+            statutoryPenalties = "Civil money penalties per day, enforcement orders, license suspension",
+            overview = "Covered financial institutions must notify the NYDFS superintendent as promptly as possible but in no event later than 72 hours from a determination that a cybersecurity event has occurred that impacts nonpublic information or has a reasonable likelihood of materially harming any material part of normal operations.",
+            mandatoryRequirements = listOf(
+                "Notice must be submitted electronically via the secure NYDFS Cybersecurity Portal.",
+                "Covered entities must notify NYDFS within 24 hours of making any extortion or ransom payment.",
+                "Written explanation of reasons why payment was necessary, alternatives considered, and sanction screening.",
+                "Annual certification of compliance submitted by CISO and highest governing board member."
+            ),
+            incidentPlaybookChecklist = listOf(
+                "T+00h: Identify whether nonpublic personal information or critical banking operational availability is compromised.",
+                "T+24h: If extortion demands exist, conduct mandatory OFAC SDN sanctions screening before any payment negotiations.",
+                "T+48h: Prepare electronic notification for NYDFS Secure Portal.",
+                "T+72h: Submit statutory notice to Superintendent of Financial Services."
+            ),
+            commonPitfalls = listOf(
+                "Failing to report extortion payments within the separate 24-hour notification window under the 2023 amendment.",
+                "Failing to screen threat actors against OFAC SDN lists, creating strict-liability federal sanctions exposure.",
+                "Delaying notification because an affiliate or third-party service provider was the entity breached."
+            )
+        ),
+        DoctrinePlaybook(
+            id = "pipeda-law25-breach",
+            title = "PIPEDA & Law 25: Real Risk of Significant Harm (Canadian Privacy)",
+            authority = "Office of the Privacy Commissioner of Canada (OPC) & Quebec CAI",
+            deadlineWindow = "As soon as feasible (Federal PIPEDA) / Without delay (Quebec Law 25)",
+            statutoryPenalties = "Federal fines up to $100,000 per violation; Quebec CAI penal fines up to $25,000,000 or 4% of worldwide turnover",
+            overview = "Federal PIPEDA Division 1.1 and Quebec Law 25 mandate reporting of confidentiality incidents that present a 'Real Risk of Significant Harm' (RROSH) to individuals. Factors include the sensitivity of the personal information and the probability that it will be misused.",
+            mandatoryRequirements = listOf(
+                "Assessment of RROSH considering data sensitivity and probability of malicious exploitation.",
+                "Mandatory notification to the Privacy Commissioner of Canada (OPC) or Quebec CAI.",
+                "Direct notification to affected individuals containing required statutory elements unless contrary to law enforcement.",
+                "Mandatory internal Breach Register maintained for a minimum of 24 months, even for below-threshold incidents."
+            ),
+            incidentPlaybookChecklist = listOf(
+                "T+00h: Isolate affected records and invoke corporate privacy officer / legal counsel.",
+                "T+12h: Execute RROSH matrix (classify data sensitivity: financial, biometric, health, credentials).",
+                "T+24h: If RROSH is established, draft OPC and CAI regulatory reporting forms.",
+                "T+48h: Prepare individual breach notification notices with credit monitoring and remediation advice.",
+                "T+72h: Submit formal filing to OPC / CAI and record comprehensive log in 24-month statutory register."
+            ),
+            commonPitfalls = listOf(
+                "Assuming low volume negates RROSH: a single highly sensitive record can meet the statutory threshold.",
+                "Failing to maintain the mandatory 24-month breach record log for non-notified incidents.",
+                "Overlooking Quebec Law 25 extraterritorial obligations for any residents of Quebec."
+            ),
+            expertAdvisoryNote = "Curated by Mohammad Movahedi (CIPP/C - movahedi.ca): Canadian privacy law places personal accountability on organizations for demonstrating defensible RROSH assessments. If in doubt, conduct a structured risk matrix or consult with an accredited Canadian privacy specialist at movahedi.ca."
+        ),
+        DoctrinePlaybook(
+            id = "aida-ai-governance",
+            title = "AIDA & EU AI Act: High-Impact AI System Incident Response",
+            authority = "Artificial Intelligence and Data Commissioner (AIDA) & EU AI Office",
+            deadlineWindow = "Immediate containment & statutory notification upon critical safety failure",
+            statutoryPenalties = "AIDA administrative monetary penalties up to 3% of gross global revenues; EU AI Act up to €35M / 7% of worldwide turnover",
+            overview = "Emerging AI safety standards require organizations operating high-impact AI systems or autonomous agentic workflows to monitor for catastrophic failures, algorithmic bias, model hallucinations causing legal injury, and unauthorized training data ingestion.",
+            mandatoryRequirements = listOf(
+                "Continuous logging of model inputs, outputs, inference latency, and automated decision rationales.",
+                "Establish human-in-the-loop kill switches and runtime prompt-injection interception shields.",
+                "Documented incident reporting to the AI and Data Commissioner for critical harms.",
+                "Regular third-party algorithmic impact assessments (AIA) and red-team audits."
+            ),
+            incidentPlaybookChecklist = listOf(
+                "T+00h: Detect anomalous model output, hallucination burst, or unauthorized data retrieval via AI security platform.",
+                "T+02h: Trigger model rollback or activate deterministic fallback rules to freeze autonomous agent actions.",
+                "T+12h: Secure inference logs, embedding vectors, and user telemetry for algorithmic root-cause analysis.",
+                "T+48h: Document bias delta, data exposure scope, and notify affected parties if automated decisions caused material harm."
+            ),
+            commonPitfalls = listOf(
+                "Treating generative AI systems as conventional software without semantic boundary monitoring.",
+                "Failing to log intermediate agent tool-calls and API access credentials.",
+                "Relying solely on LLM self-moderation without independent runtime guardrails."
+            ),
+            expertAdvisoryNote = "Curated by Mohammad Movahedi (movahedi.ca): Responsible AI governance bridges technical model risk and corporate accountability. Need an algorithmic safety audit or AI governance framework for your product? Explore AI advisory services at movahedi.ca."
         )
     )
 }

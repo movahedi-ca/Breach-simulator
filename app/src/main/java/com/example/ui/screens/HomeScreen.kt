@@ -143,7 +143,7 @@ fun HomeScreen(
                         )
                     )
                 }
-                items(ScenarioCategory.values()) { category ->
+                items(ScenarioCategory.entries, key = { it.name }) { category ->
                     FilterChip(
                         selected = selectedCategoryFilter == category,
                         onClick = { selectedCategoryFilter = category },
@@ -160,7 +160,7 @@ fun HomeScreen(
         }
 
         // Scenario Cards
-        items(filteredScenarios) { scenario ->
+        items(filteredScenarios, key = { it.id }, contentType = { "scenario_card" }) { scenario ->
             ScenarioCard(
                 scenario = scenario,
                 onClick = { onSelectScenario(scenario) }

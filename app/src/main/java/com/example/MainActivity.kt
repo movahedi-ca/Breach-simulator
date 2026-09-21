@@ -4,10 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.togetherWith
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
@@ -34,6 +31,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        window.decorView.setBackgroundColor(android.graphics.Color.parseColor("#0B101B"))
 
         val database = AppDatabase.getDatabase(applicationContext)
         val repository = SimulationRepository(database.simulationDao())
@@ -83,9 +81,8 @@ fun TabletopBreachApp(viewModel: BreachSimulatorViewModel) {
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
-            AnimatedContent(
+            Crossfade(
                 targetState = currentScreen,
-                transitionSpec = { fadeIn() togetherWith fadeOut() },
                 label = "screen_transition"
             ) { screen ->
                 when (screen) {

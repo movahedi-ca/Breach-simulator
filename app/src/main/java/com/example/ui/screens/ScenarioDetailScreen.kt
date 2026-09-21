@@ -48,14 +48,14 @@ fun ScenarioDetailScreen(
             IconButton(
                 onClick = onBack,
                 modifier = Modifier
-                    .size(40.dp)
+                    .size(48.dp)
                     .clip(RoundedCornerShape(8.dp))
                     .background(SlateCardElevated)
                     .testTag("scenario_detail_back_button")
             ) {
                 Icon(
                     imageVector = Icons.Default.ArrowBack,
-                    contentDescription = "Back",
+                    contentDescription = "Back to scenario catalog",
                     tint = TextPrimary
                 )
             }

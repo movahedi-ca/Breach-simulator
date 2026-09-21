@@ -92,5 +92,6 @@ data class DoctrinePlaybook(
     val overview: String,
     val mandatoryRequirements: List<String>,
     val incidentPlaybookChecklist: List<String>,
-    val commonPitfalls: List<String>
+    val commonPitfalls: List<String>,
+    val expertAdvisoryNote: String? = null
 )
